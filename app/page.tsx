@@ -193,7 +193,22 @@ export default function Home() {
           </h2>
           <div className="space-y-2">
             {coveredPlans.map((plan) => (
-              <PlanCard key={plan.carrier} plan={plan} />
+              <div key={plan.carrier}>
+                <PlanCard plan={plan} />
+                {plan.rank === 1 && plan.carrier === "楽天モバイル" && (
+                  <div className="mt-2">
+                    <a
+                      href="https://hb.afl.rakuten.co.jp/hsc/55576160.31a998bb.55576161.a8402184/?link_type=hybrid_url&rafst=rmn&ut=eyJwYWdlIjoic2hvcCIsInR5cGUiOiJoeWJyaWRfdXJsIiwiY29sIjoxLCJjYXQiOjEsImJhbiI6MjM3Nzg5MiwiYW1wIjpmYWxzZX0%3D"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block w-full text-center bg-[#bf0000] hover:bg-[#a00000] text-white text-sm font-semibold rounded-xl py-3 px-4 transition-colors min-h-[48px] flex items-center justify-center"
+                    >
+                      楽天モバイル公式で詳細を見る →
+                    </a>
+                    <p className="text-[10px] text-center text-gray-300 mt-1">※アフィリエイトリンク</p>
+                  </div>
+                )}
+              </div>
             ))}
           </div>
 
@@ -500,6 +515,19 @@ export default function Home() {
                           </span>
                         </div>
                       </div>
+                    </div>
+                  )}
+                  {hikariCalc && withRakutenMobile && (
+                    <div>
+                      <a
+                        href="https://network.mobile.rakuten.co.jp/hikari/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block w-full text-center bg-[#bf0000] hover:bg-[#a00000] text-white text-sm font-semibold rounded-xl py-3 px-4 transition-colors min-h-[48px] flex items-center justify-center"
+                      >
+                        楽天ひかり公式で詳細を見る →
+                      </a>
+                      <p className="text-[10px] text-center text-gray-300 mt-1">※アフィリエイトリンク</p>
                     </div>
                   )}
                 </>
