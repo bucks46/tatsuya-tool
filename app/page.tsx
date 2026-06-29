@@ -295,36 +295,50 @@ export default function Home() {
                       const isBest =
                         d.monthly > 0 && d.monthly === maxSavingMonthly;
                       return (
-                        <div
-                          key={plan.carrier}
-                          className={`flex items-center justify-between rounded-xl px-4 py-3 ${
-                            isBest
-                              ? "bg-red-50 border border-[#bf0000]/20"
-                              : "bg-white border border-gray-100"
-                          }`}
-                        >
-                          <div>
-                            <p className="text-sm font-medium text-gray-800">
-                              {plan.carrier}
-                            </p>
-                            <p className="text-xs text-gray-400">{plan.tierLabel}</p>
+                        <div key={plan.carrier}>
+                          <div
+                            className={`flex items-center justify-between rounded-xl px-4 py-3 ${
+                              isBest
+                                ? "bg-red-50 border border-[#bf0000]/20"
+                                : "bg-white border border-gray-100"
+                            }`}
+                          >
+                            <div>
+                              <p className="text-sm font-medium text-gray-800">
+                                {plan.carrier}
+                              </p>
+                              <p className="text-xs text-gray-400">{plan.tierLabel}</p>
+                            </div>
+                            <div className="text-right">
+                              <p
+                                className={`text-sm font-bold ${
+                                  d.monthly > 0
+                                    ? "text-[#bf0000]"
+                                    : d.monthly < 0
+                                    ? "text-gray-500"
+                                    : "text-gray-300"
+                                }`}
+                              >
+                                {diffLabel(d.monthly)}円/月
+                              </p>
+                              <p className="text-xs text-gray-400">
+                                {diffLabel(d.yearly)}円/年
+                              </p>
+                            </div>
                           </div>
-                          <div className="text-right">
-                            <p
-                              className={`text-sm font-bold ${
-                                d.monthly > 0
-                                  ? "text-[#bf0000]"
-                                  : d.monthly < 0
-                                  ? "text-gray-500"
-                                  : "text-gray-300"
-                              }`}
-                            >
-                              {diffLabel(d.monthly)}円/月
-                            </p>
-                            <p className="text-xs text-gray-400">
-                              {diffLabel(d.yearly)}円/年
-                            </p>
-                          </div>
+                          {isBest && plan.carrier === "楽天モバイル" && (
+                            <div className="mt-1.5">
+                              <a
+                                href="https://hb.afl.rakuten.co.jp/hsc/55576160.31a998bb.55576161.a8402184/?link_type=hybrid_url&rafst=rmn&ut=eyJwYWdlIjoic2hvcCIsInR5cGUiOiJoeWJyaWRfdXJsIiwiY29sIjoxLCJjYXQiOjEsImJhbiI6MjM3Nzg5MiwiYW1wIjpmYWxzZX0%3D"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="block w-full text-center bg-[#bf0000] hover:bg-[#a00000] text-white text-sm font-semibold rounded-xl py-3 px-4 transition-colors min-h-[48px] flex items-center justify-center"
+                              >
+                                楽天モバイル公式で詳細を見る →
+                              </a>
+                              <p className="text-[10px] text-center text-gray-300 mt-1">※アフィリエイトリンク</p>
+                            </div>
+                          )}
                         </div>
                       );
                     })}
