@@ -17,9 +17,9 @@ describe('通信費まるごと試算ツール', () => {
       expect(Number(slider.getAttribute('value') ?? (slider as HTMLInputElement).value)).toBe(20)
     })
 
-    it('Step2・Step3は折りたたまれている', () => {
+    it('Step2はデフォルト展開・Step3は折りたたまれている（P3）', () => {
       render(<Home />)
-      expect(screen.queryByText('現在のキャリア')).not.toBeInTheDocument()
+      expect(screen.getByText('現在のキャリア')).toBeInTheDocument()
       expect(screen.queryByText('自宅にネット回線がある')).not.toBeInTheDocument()
     })
 
@@ -30,7 +30,7 @@ describe('通信費まるごと試算ツール', () => {
 
     it('20GBで楽天モバイルが1位のためCTAを表示する', () => {
       render(<Home />)
-      expect(screen.getByText('楽天モバイル公式で詳細を見る →')).toBeInTheDocument()
+      expect(screen.getByText('最安の楽天モバイルを公式で見る →')).toBeInTheDocument()
     })
   })
 
@@ -49,14 +49,14 @@ describe('通信費まるごと試算ツール', () => {
       render(<Home />)
       const slider = screen.getByRole('slider', { name: '月のデータ使用量' })
       fireEvent.change(slider, { target: { value: '3' } })
-      expect(screen.queryByText('楽天モバイル公式で詳細を見る →')).not.toBeInTheDocument()
+      expect(screen.queryByText('最安の楽天モバイルを公式で見る →')).not.toBeInTheDocument()
     })
 
     it('15GBに変更すると楽天モバイルが1位でCTAを表示', () => {
       render(<Home />)
       const slider = screen.getByRole('slider', { name: '月のデータ使用量' })
       fireEvent.change(slider, { target: { value: '15' } })
-      expect(screen.getByText('楽天モバイル公式で詳細を見る →')).toBeInTheDocument()
+      expect(screen.getByText('最安の楽天モバイルを公式で見る →')).toBeInTheDocument()
     })
 
     it('21GBに変更すると容量不足プランの警告が表示される', () => {
@@ -70,7 +70,7 @@ describe('通信費まるごと試算ツール', () => {
       render(<Home />)
       const slider = screen.getByRole('slider', { name: '月のデータ使用量' })
       fireEvent.change(slider, { target: { value: '21' } })
-      expect(screen.getByText('楽天モバイル公式で詳細を見る →')).toBeInTheDocument()
+      expect(screen.getByText('最安の楽天モバイルを公式で見る →')).toBeInTheDocument()
     })
 
     it('50GBでも容量不足プラン警告が表示される', () => {
@@ -84,28 +84,26 @@ describe('通信費まるごと試算ツール', () => {
   // ──────────────────────────────
   // Step2 折りたたみ
   // ──────────────────────────────
-  describe('Step2 折りたたみ', () => {
-    it('クリックすると展開する', () => {
+  describe('Step2 折りたたみ（P3: デフォルト展開）', () => {
+    it('デフォルトで展開している', () => {
       render(<Home />)
-      const btn = screen.getByRole('button', { name: /今の料金と比較する/ })
-      fireEvent.click(btn)
       expect(screen.getByText('現在のキャリア')).toBeInTheDocument()
+      expect(screen.getByText('現在の月額（税込）')).toBeInTheDocument()
     })
 
-    it('2回クリックすると再び折りたたまれる', () => {
+    it('クリックすると折りたたまれる', () => {
       render(<Home />)
       const btn = screen.getByRole('button', { name: /今の料金と比較する/ })
-      fireEvent.click(btn)
       fireEvent.click(btn)
       expect(screen.queryByText('現在のキャリア')).not.toBeInTheDocument()
     })
 
-    it('展開後にキャリア選択・月額入力フォームが表示される', () => {
+    it('2回クリックすると再び展開する', () => {
       render(<Home />)
       const btn = screen.getByRole('button', { name: /今の料金と比較する/ })
       fireEvent.click(btn)
+      fireEvent.click(btn)
       expect(screen.getByText('現在のキャリア')).toBeInTheDocument()
-      expect(screen.getByText('現在の月額（税込）')).toBeInTheDocument()
     })
   })
 
@@ -138,7 +136,7 @@ describe('通信費まるごと試算ツール', () => {
       fireEvent.change(screen.getByRole('slider', { name: '月のデータ使用量' }), {
         target: { value: '15' },
       })
-      expect(screen.getByText('楽天モバイル公式で詳細を見る →')).toBeInTheDocument()
+      expect(screen.getByText('最安の楽天モバイルを公式で見る →')).toBeInTheDocument()
     })
 
     it('3GB（楽天3位）：CTAなし', () => {
@@ -146,7 +144,7 @@ describe('通信費まるごと試算ツール', () => {
       fireEvent.change(screen.getByRole('slider', { name: '月のデータ使用量' }), {
         target: { value: '3' },
       })
-      expect(screen.queryByText('楽天モバイル公式で詳細を見る →')).not.toBeInTheDocument()
+      expect(screen.queryByText('最安の楽天モバイルを公式で見る →')).not.toBeInTheDocument()
     })
 
     it('21GB（カバードプランで楽天1位）：CTAあり', () => {
@@ -154,7 +152,7 @@ describe('通信費まるごと試算ツール', () => {
       fireEvent.change(screen.getByRole('slider', { name: '月のデータ使用量' }), {
         target: { value: '21' },
       })
-      expect(screen.getByText('楽天モバイル公式で詳細を見る →')).toBeInTheDocument()
+      expect(screen.getByText('最安の楽天モバイルを公式で見る →')).toBeInTheDocument()
     })
 
     it('100GB（カバードプランで楽天1位）：CTAあり', () => {
@@ -162,7 +160,24 @@ describe('通信費まるごと試算ツール', () => {
       fireEvent.change(screen.getByRole('slider', { name: '月のデータ使用量' }), {
         target: { value: '100' },
       })
-      expect(screen.getByText('楽天モバイル公式で詳細を見る →')).toBeInTheDocument()
+      expect(screen.getByText('最安の楽天モバイルを公式で見る →')).toBeInTheDocument()
+    })
+  })
+
+  // ──────────────────────────────
+  // P1a: Step2 節約額CTA（動的コピー）
+  // ──────────────────────────────
+  describe('P1a: Step2 節約額入りCTA', () => {
+    it('現在の月額を入力すると節約額入りCTAを表示する', () => {
+      render(<Home />)
+      // Step2はデフォルト展開。20GB・楽天2,178円が最安 → 7,315-2,178=5,137円節約
+      fireEvent.change(screen.getByPlaceholderText('例: 7315'), {
+        target: { value: '7315' },
+      })
+      expect(
+        screen.getByText(/円下がる。楽天モバイルを見る →/)
+      ).toBeInTheDocument()
+      expect(screen.getByText(/月5,137円下がる/)).toBeInTheDocument()
     })
   })
 })

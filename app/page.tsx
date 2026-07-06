@@ -10,6 +10,7 @@ import {
   type HomeType,
 } from "@/lib/calc";
 import { CARRIER_LIST } from "@/lib/plans";
+import { track } from "@vercel/analytics";
 
 /* ------------------------------------------------------------------ */
 /* Presentational helpers                                               */
@@ -84,8 +85,8 @@ export default function Home() {
   /* Step 1 */
   const [usageGB, setUsageGB] = useState(20);
 
-  /* Step 2 */
-  const [step2Open, setStep2Open] = useState(false);
+  /* Step 2 — P3: デフォルト展開で節約額フォームを即表示（摩擦除去） */
+  const [step2Open, setStep2Open] = useState(true);
   const [currentCarrier, setCurrentCarrier] = useState("");
   const [currentMonthly, setCurrentMonthly] = useState("");
 
@@ -201,9 +202,15 @@ export default function Home() {
                       href="https://hb.afl.rakuten.co.jp/hsc/55576160.31a998bb.55576161.a8402184/?link_type=hybrid_url&rafst=rmn&ut=eyJwYWdlIjoic2hvcCIsInR5cGUiOiJoeWJyaWRfdXJsIiwiY29sIjoxLCJjYXQiOjEsImJhbiI6MjM3Nzg5MiwiYW1wIjpmYWxzZX0%3D"
                       target="_blank"
                       rel="noopener noreferrer"
+                      onClick={() =>
+                        track("affiliate_click", {
+                          placement: "step1_rank1",
+                          carrier: "rakuten_mobile",
+                        })
+                      }
                       className="block w-full text-center bg-[#bf0000] hover:bg-[#a00000] text-white text-sm font-semibold rounded-xl py-3 px-4 transition-colors min-h-[48px] flex items-center justify-center"
                     >
-                      楽天モバイル公式で詳細を見る →
+                      最安の楽天モバイルを公式で見る →
                     </a>
                     <p className="text-[10px] text-center text-gray-300 mt-1">※アフィリエイトリンク</p>
                   </div>
@@ -332,9 +339,16 @@ export default function Home() {
                                 href="https://hb.afl.rakuten.co.jp/hsc/55576160.31a998bb.55576161.a8402184/?link_type=hybrid_url&rafst=rmn&ut=eyJwYWdlIjoic2hvcCIsInR5cGUiOiJoeWJyaWRfdXJsIiwiY29sIjoxLCJjYXQiOjEsImJhbiI6MjM3Nzg5MiwiYW1wIjpmYWxzZX0%3D"
                                 target="_blank"
                                 rel="noopener noreferrer"
+                                onClick={() =>
+                                  track("affiliate_click", {
+                                    placement: "step2_bestsaving",
+                                    carrier: "rakuten_mobile",
+                                    monthlySaving: d.monthly,
+                                  })
+                                }
                                 className="block w-full text-center bg-[#bf0000] hover:bg-[#a00000] text-white text-sm font-semibold rounded-xl py-3 px-4 transition-colors min-h-[48px] flex items-center justify-center"
                               >
-                                楽天モバイル公式で詳細を見る →
+                                月{d.monthly.toLocaleString()}円下がる。楽天モバイルを見る →
                               </a>
                               <p className="text-[10px] text-center text-gray-300 mt-1">※アフィリエイトリンク</p>
                             </div>
@@ -537,6 +551,12 @@ export default function Home() {
                         href="https://network.mobile.rakuten.co.jp/hikari/"
                         target="_blank"
                         rel="noopener noreferrer"
+                        onClick={() =>
+                          track("affiliate_click", {
+                            placement: "step3_hikari",
+                            carrier: "rakuten_hikari",
+                          })
+                        }
                         className="block w-full text-center bg-[#bf0000] hover:bg-[#a00000] text-white text-sm font-semibold rounded-xl py-3 px-4 transition-colors min-h-[48px] flex items-center justify-center"
                       >
                         楽天ひかり公式で詳細を見る →
